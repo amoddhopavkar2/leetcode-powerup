@@ -1,0 +1,6 @@
+const d="AIzaSyB3gELS0ij-GpONqYig9kWzloqib1hMV-Y";function u(e){return e.split("-").map(t=>t.charAt(0).toUpperCase()+t.slice(1)).join(" ")}const p=window.location.pathname.split("/"),s=p[2]||"unknown",h=u(s),l=document.createElement("div");l.id="leetcode-power-up-sidebar";l.innerHTML=`
+  <h2>YouTube Solutions</h2>
+  <ul id="yt-results"><li>Loading...</li></ul>
+  <h2>Notes</h2>
+  <textarea id="scratchpad" placeholder="Type your notes..."></textarea>
+`;document.body.appendChild(l);const i=document.getElementById("scratchpad");chrome.storage.local.get([s],e=>{i.value=e[s]||""});i.addEventListener("input",()=>{const e={};e[s]=i.value,chrome.storage.local.set(e)});const n=document.getElementById("yt-results"),m=encodeURIComponent(`${h} LeetCode solution`),g=`https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${m}&key=${d}`;fetch(g).then(e=>e.json()).then(e=>{if(n.innerHTML="",!e.items){n.innerHTML="<li>No results.</li>";return}e.items.forEach(t=>{const r=t.id.videoId,c=t.snippet.title,a=document.createElement("li"),o=document.createElement("a");o.href=`https://www.youtube.com/watch?v=${r}`,o.target="_blank",o.textContent=c,a.appendChild(o),n.appendChild(a)})}).catch(e=>{console.error("YouTube API error",e),n.innerHTML="<li>Error loading videos.</li>"});
